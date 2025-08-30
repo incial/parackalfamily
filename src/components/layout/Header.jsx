@@ -18,7 +18,7 @@ const Header = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-[0.1em] sm:tracking-[0.15em] uppercase mb-4 text-white leading-tight"
         >
-          parackalfamily
+          parackal family
         </motion.h1>
         
         <motion.p
