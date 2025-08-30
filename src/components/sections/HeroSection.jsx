@@ -51,11 +51,12 @@ const HeroSection = () => {
               poster="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80"
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
+              muted
+              playsInline
             >
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+              <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4" />
               Your browser does not support the video tag.
-            </video>
-            
+            </video> 
             {/* Custom play button overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
               <Button

@@ -58,7 +58,9 @@ const LifeTimeline = () => {
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line - hidden on mobile, visible on larger screens */}
+          {/* Mobile Timeline line - visible on mobile */}
+          <div className="md:hidden absolute left-6 top-0 w-px bg-zinc-600 h-full"></div>
+          {/* Desktop Timeline line - hidden on mobile, visible on larger screens */}
           <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-px bg-zinc-600 h-full"></div>
           
           <div className="space-y-8 sm:space-y-12">
@@ -69,36 +71,70 @@ const LifeTimeline = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 className={`relative flex items-center ${
-                  // On mobile, all items align left. On desktop, alternate sides.
-                  'md:' + (item.side === 'left' ? 'justify-start' : 'justify-end')
-                } justify-center md:justify-start`}
+                  // Mobile: all cards align to the right of timeline with padding
+                  // Desktop: alternate left and right
+                  'pl-16 md:pl-0 ' + 
+                  (item.side === 'left' 
+                    ? 'md:justify-start' 
+                    : 'md:justify-end'
+                  )
+                }`}
               >
+                {/* Mobile timeline dot */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: index * 0.2 + 0.3 }}
+                  className="md:hidden absolute left-4 w-4 h-4 bg-white rounded-full border-4 border-black z-10"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0.5 bg-red-500 rounded-full"
+                  ></motion.div>
+                </motion.div>
+
                 <div className={`w-full md:w-5/12 ${
-                  // On mobile, center content. On desktop, position based on side.
-                  'text-center md:text-left md:' + (item.side === 'left' ? 'pr-8 text-right' : 'pl-8 text-left')
+                  // Desktop spacing based on side
+                  item.side === 'left' ? 'md:pr-8' : 'md:pl-8'
                 }`}>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="bg-zinc-900 border border-zinc-700 rounded-lg p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 max-w-sm mx-auto md:max-w-none md:mx-0"
+                    className="bg-zinc-900 border border-zinc-700 rounded-lg p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 max-w-sm md:max-w-none"
                   >
+                    {/* Badge/Calendar section */}
                     <div className={`flex items-center gap-3 mb-3 ${
-                      'justify-center md:justify-start md:' + (item.side === 'left' ? 'flex-row-reverse' : 'flex-row')
+                      // Mobile: always left align, Desktop: align based on card side
+                      'justify-start md:' + (item.side === 'left' ? 'justify-end' : 'justify-start')
                     }`}>
-                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-400" />
-                      <Badge variant="outline" className="bg-white text-black border-white font-bold text-xs sm:text-sm">
-                        {item.year}
-                      </Badge>
+                      {/* Desktop: reverse order for left side cards */}
+                      <div className={`flex items-center gap-3 ${
+                        item.side === 'left' ? 'md:flex-row-reverse' : 'flex-row'
+                      }`}>
+                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-400" />
+                        <Badge variant="outline" className="bg-white text-black border-white font-bold text-xs sm:text-sm">
+                          {item.year}
+                        </Badge>
+                      </div>
                     </div>
-                    <h3 className="font-display text-lg sm:text-xl font-bold mb-3 text-white leading-tight">
+                    
+                    {/* Title and description */}
+                    <h3 className={`font-display text-lg sm:text-xl font-bold mb-3 text-white leading-tight ${
+                      // Mobile: always left, Desktop: align based on card side
+                      'text-left md:' + (item.side === 'left' ? 'text-right' : 'text-left')
+                    }`}>
                       {item.title}
                     </h3>
-                    <p className="font-sans text-sm sm:text-base text-zinc-300 leading-relaxed">
+                    <p className={`font-sans text-sm sm:text-base text-zinc-300 leading-relaxed ${
+                      // Mobile: always left, Desktop: align based on card side
+                      'text-left md:' + (item.side === 'left' ? 'text-right' : 'text-left')
+                    }`}>
                       {item.description}
                     </p>
                   </motion.div>
                 </div>
 
-                {/* Timeline dot - hidden on mobile */}
+                {/* Desktop Timeline dot - hidden on mobile */}
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
@@ -120,10 +156,15 @@ const LifeTimeline = () => {
             initial={{ opacity: 0, scale: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex justify-center mt-12"
+            className="flex justify-center mt-8 sm:mt-12 relative"
           >
-            <div className="bg-white text-black rounded-full p-4">
-              <Heart className="w-8 h-8 fill-current" />
+            {/* Mobile timeline end dot */}
+            <div className="md:hidden absolute -top-4 left-6 w-4 h-4 bg-white rounded-full border-4 border-black z-10">
+              <div className="absolute inset-0.5 bg-red-500 rounded-full"></div>
+            </div>
+            
+            <div className="bg-white text-black rounded-full p-3 sm:p-4 ml-16 md:ml-0">
+              <Heart className="w-6 h-6 sm:w-8 sm:h-8 fill-current" />
             </div>
           </motion.div>
         </div>
